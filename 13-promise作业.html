@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        #list{width: 500px; min-height: 200px; border: 1px dotted pink;}
+    </style>
+</head>
+<body>
+<h2>旅游列表</h2>
+<ul id="list"></ul>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script>
+   $(function () {
+        function getJson(page){
+                const p = new Promise(function (resolve,reject) {
+                    $.getJSON('json/0'+page+'.json',function(data){
+                                 resolve(data);
+                            })
+                console.log(page)
+            });
+            return p;
+        }
+
+
+        //函数的调用
+       //then里面的两个参数，分别对应 成功的毁掉resolve和失败的回调reject
+       getJson(1).then(function (data) {
+           // console.log(data);
+           var mydata = data.matchedProducts;
+           console.log(mydata);
+           for (var i= 0; i<mydata.length; i++){
+               var $li = $(`<li>序号：${mydata[i].collection_num}
+                --标题：
+                ${mydata[i].pro_title}</li>`);
+               $('#list').append($li);
+           }
+
+           return getJson(2)
+       }).then(function (data) {
+           // console.log(data1);
+           var mydata = data.matchedProducts;
+           console.log(mydata);
+           for (var i= 0; i<mydata.length; i++){
+               var $li = $(`<li>序号：${mydata[i].collection_num}
+                --标题：
+                ${mydata[i].pro_title}</li>`);
+               $('#list').append($li);
+
+           }
+           return getJson(3)
+       }).then(function (data) {
+           // console.log(data2);
+           var mydata = data.matchedProducts;
+           console.log(mydata);
+           for (var i= 0; i<mydata.length; i++){
+               var $li = $(`<li>序号：${mydata[i].collection_num}
+                --标题：
+                ${mydata[i].pro_title}</li>`);
+               $('#list').append($li);
+           }
+       }).catch(function (e) {
+           console.log("已经捕获到异常");
+           console.log(e);
+       }).finally(function () {
+           console.log("异步调用结束");
+       })
+
+
+
+
+    });
+</script>
+</body>
+</html>
